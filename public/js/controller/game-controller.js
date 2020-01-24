@@ -1,5 +1,6 @@
 import ClientConfig from '../config/client-config.js';
 import AudioController from './audio-controller.js';
+import SampleController from './sample-controller.js';
 import TextToDraw from '../model/text-to-draw.js';
 import CanvasFactory from '../view/canvas-factory.js';
 import GameView from '../view/game-view.js';
@@ -24,6 +25,7 @@ export default class GameController {
                                      this.toggleGridLinesCallback.bind(this)
                                      );
         this.audioController = new AudioController();
+        this.sampleController = new SampleController();
         this.players = [];
         this.food = {};
         this.textsToDraw = [];
@@ -187,10 +189,23 @@ export default class GameController {
 
     _handleFoodCollected(text, coordinate, color, isSwap) {
         this.textsToDraw.unshift(new TextToDraw(text, coordinate, color));
+        // isSwap === blue
         if (isSwap) {
-            this.audioController.playSwapSound();
+            console.log('[DEBUG] isSwap: yes');
+            this.sampleController.playSnareSound();
         } else {
-            this.audioController.playFoodCollectedSound();
+            //this.audioController.playKickSound();
+            console.log('[DEBUG] isSwap: no');
+            switch (color){
+                case "red":
+                    console.log('[DEBUG] "' + color + '"');
+                    Math.round(Math.random() * 1) ? this.sampleController.playMelodySound() : this.sampleController.playKickSound();
+                    break;
+                case "green":
+                    console.log('[DEBUG] "' + color + '"');
+                    this.sampleController.playHihatSound();
+                    break;
+            }
         }
     }
 
