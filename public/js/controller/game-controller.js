@@ -30,6 +30,7 @@ export default class GameController {
         this.food = {};
         this.textsToDraw = [];
         this.walls = [];
+        this.score = 0;
     }
 
     connect(io) {
@@ -150,6 +151,11 @@ export default class GameController {
         localStorage.setItem(ClientConfig.LOCAL_STORAGE.PLAYER_NAME, name);
     }
 
+    resetScore() {
+        this.score = 0;
+        this.sampleController.resetSampler()
+    }
+
     spectateGameCallback() {
         this.socket.emit(ClientConfig.IO.OUTGOING.SPECTATE_GAME);
     }
@@ -164,6 +170,28 @@ export default class GameController {
 
     toggleGridLinesCallback() {
         this.canvasView.toggleGridLines();
+    }
+
+    updateScore(color) {
+        console.log(color)
+            switch (color){
+                case "red":
+                    this.score += 1;
+                    break;
+                case "green":
+                    this.score += 5;
+                    break;
+                case "yellow":
+                    this.score += 25;
+                    break;
+                case "blue":
+                    this.score += 1;
+                    break;
+            }
+    }
+
+    updateMusic(score) {
+        this.sampleController.updateSample(score)
     }
 
     /*******************************
@@ -189,21 +217,19 @@ export default class GameController {
 
     _handleFoodCollected(text, coordinate, color, isSwap) {
         this.textsToDraw.unshift(new TextToDraw(text, coordinate, color));
+        this.updateScore(color)
+        this.updateMusic(this.score)
         // isSwap === blue
         if (isSwap) {
-            console.log('[DEBUG] isSwap: yes');
-            this.sampleController.playSnareSound();
+            //this.sampleController.playSnareSound();
         } else {
             //this.audioController.playKickSound();
-            console.log('[DEBUG] isSwap: no');
             switch (color){
                 case "red":
-                    console.log('[DEBUG] "' + color + '"');
-                    Math.round(Math.random() * 1) ? this.sampleController.playMelodySound() : this.sampleController.playKickSound();
+                    //Math.round(Math.random() * 1) ? this.sampleController.playMelodySound() : this.sampleController.playKickSound();
                     break;
                 case "green":
-                    console.log('[DEBUG] "' + color + '"');
-                    this.sampleController.playHihatSound();
+                    //this.sampleController.playHihatSound();
                     break;
             }
         }
@@ -236,6 +262,7 @@ export default class GameController {
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.SUICIDE, this.gameView.showSuicideMessage.bind(this.gameView));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.YOU_DIED,
             this.audioController.playDeathSound.bind(this.audioController));
+        this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.YOU_DIED, this.resetScore.bind(this));
         this.socket.on(ClientConfig.IO.INCOMING.NOTIFICATION.YOU_MADE_A_KILL,
             this.audioController.playKillSound.bind(this.audioController));
     }
