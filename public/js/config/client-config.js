@@ -54,4 +54,4 @@ export default {
         PLAYER_IMAGE: 'node-multiplayer-snake-player-image',
         PLAYER_NAME: 'node-multiplayer-snake-player-name',
     },
-};
+}
