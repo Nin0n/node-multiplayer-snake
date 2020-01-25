@@ -1,5 +1,4 @@
 import ClientConfig from '../config/client-config.js';
-import AudioController from './audio-controller.js';
 import SampleController from './sample-controller.js';
 import TextToDraw from '../model/text-to-draw.js';
 import CanvasFactory from '../view/canvas-factory.js';
@@ -24,8 +23,7 @@ export default class GameController {
                                      this.startLengthChangeCallback.bind(this),
                                      this.toggleGridLinesCallback.bind(this)
                                      );
-        this.audioController = new AudioController();
-        this.sampleController = new SampleController();
+        this.audioController = new SampleController();
         this.players = [];
         this.food = {};
         this.textsToDraw = [];
@@ -139,7 +137,6 @@ export default class GameController {
 
     muteAudioCallback() {
         this.audioController.toggleMute();
-        this.sampleController.toggleMute();
         this.gameView.setMuteStatus(this.audioController.isMuted);
     }
 
@@ -154,7 +151,7 @@ export default class GameController {
 
     resetScore() {
         this.score = 0;
-        this.sampleController.resetSampler()
+        this.audioController.resetScore()
     }
 
     spectateGameCallback() {
@@ -186,7 +183,7 @@ export default class GameController {
                 this.score += 25;
                 break;
         }
-        this.sampleController.updateScore(this.score)
+        this.audioController.updateScore(this.score)
     }
 
     /*******************************
@@ -213,20 +210,6 @@ export default class GameController {
     _handleFoodCollected(text, coordinate, color, isSwap) {
         this.textsToDraw.unshift(new TextToDraw(text, coordinate, color));
         this.updateScore(color)
-        // isSwap === blue
-        if (isSwap) {
-            //this.sampleController.playSnareSound();
-        } else {
-            //this.audioController.playKickSound();
-            switch (color){
-                case "red":
-                    //Math.round(Math.random() * 1) ? this.sampleController.playMelodySound() : this.sampleController.playKickSound();
-                    break;
-                case "green":
-                    //this.sampleController.playHihatSound();
-                    break;
-            }
-        }
     }
 
     _handleNewGameData(gameData) {

@@ -4,14 +4,10 @@ import DomHelper from '../view/dom-helper.js';
  */
 export default class SampleController {
     constructor() {
-        this.state = -1;
+        this.sampleCurrentId = -1;
         this.isMuted = false;
-        this.melody = new Audio('assets/samples/melody.wav');
-        this.kick = new Audio('assets/samples/kick.wav');
-        this.kick_loop = new Audio('assets/samples/kick.wav');
-        this.hihat = new Audio('assets/samples/hihat.wav');
-        this.hihat_loop = new Audio('assets/samples/hihat_loop.wav');
-        this.snare = new Audio('assets/samples/snare.wav');
+        this.deathSound = new Audio('assets/death.wav');
+        this.killSound = new Audio('assets/kill.wav');
         this.scoreNumber = 5;
         this.samples = [];
         this.scoresSteps = [];
@@ -24,64 +20,46 @@ export default class SampleController {
         DomHelper.getVolumeSlider().addEventListener('input', this.updateVolume.bind(this));
     }
 
-    playKickSound() {
-        if (!this.isMuted) {
-            this.kick.play();
-        }
-        // ADDED
-		this.kick.play();
-    }
 
-    playSnareSound() {
+    playDeathSound() {
         if (!this.isMuted) {
-            this.snare.play();
+            this.deathSound.play();
         }
     }
 
-    playHihatSound() {
+    playKillSound() {
         if (!this.isMuted) {
-            this.hihat.play();
+            this.killSound.play();
         }
     }
 
-    playMelodySound() {
-        if (!this.isMuted) {
-            this.melody.play();
-        }
-    }
-
-    playSample(id) {
-        this.samples[id].play();
+    playCurrentSample() {
+        this.samples[this.sampleCurrentId].play();
     }
 
     resetCurrentSample() {
-        if (this.state != -1) {
-            this.samples[this.state].pause();
-            this.samples[this.state].load();
+        if (this.sampleCurrentId != -1) {
+            this.samples[this.sampleCurrentId].pause();
+            this.samples[this.sampleCurrentId].load();
         }
     }
 
-    resetSampler() {
+    resetScore() {
         this.resetCurrentSample();
-        this.state = -1;
+        this.sampleCurrentId = -1;
     }
 
     updateScore(score) {
-        if (this.state != this.scoresSteps.length-1 && score >= this.scoresSteps[this.state+1]) {
+        if (this.sampleCurrentId < this.scoreNumber && score >= this.scoresSteps[this.sampleCurrentId+1]) {
             this.resetCurrentSample();
-            this.state += 1;
-            this.playSample(this.state);
+            this.sampleCurrentId++;
+            this.playCurrentSample();
         }
     }
 
     updateVolume() {
         const volume = DomHelper.getVolumeSlider().value;
         this.samples.forEach(e => e.volume = volume);
-        // this.sample1.volume = volume;
-        // this.sample2.volume = volume;
-        // this.sample3.volume = volume;
-        // this.sample4.volume = volume;
-        // this.sample5.volume = volume;
     }
 
     toggleMute() {
