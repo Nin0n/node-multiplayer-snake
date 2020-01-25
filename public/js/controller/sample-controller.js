@@ -18,6 +18,20 @@ export default class SampleController {
             console.log(`assets/samples/sample${i+1}.wav`)
         }
         DomHelper.getVolumeSlider().addEventListener('input', this.updateVolume.bind(this))
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
+        this.oscillatorType = 'sine'
+        
+    }
+
+    playEatSound(score) {
+        if (!this.isMuted) {
+            const oscillator = this.audioContext.createOscillator()
+            oscillator.connect(this.audioContext.destination);
+            oscillator.type = this.oscillatorType
+            oscillator.frequency.value = 70 + (2*score)
+            oscillator.start()
+            oscillator.stop(this.audioContext.currentTime + 0.3)
+        }
     }
 
 
@@ -55,6 +69,7 @@ export default class SampleController {
     }
 
     updateScore(score) {
+        this.playEatSound(score)
         const scoreSampleId = this.getSampleIdFromScore(score)
         if(this.sampleCurrentId != scoreSampleId){
             this.resetCurrentSample()
