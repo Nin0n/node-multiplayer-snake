@@ -173,6 +173,7 @@ export default class GameController {
     updateScore(color) {
         switch (color){
             case "blue":
+                this.audioController.swappy()
             case "red":
                 this.score += 1
                 break
