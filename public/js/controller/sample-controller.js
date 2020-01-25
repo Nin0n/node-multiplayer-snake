@@ -2,8 +2,9 @@ import DomHelper from '../view/dom-helper.js';
 /**
  * Controls all audio logic
  */
-export default class samplesController {
+export default class SampleController {
     constructor() {
+        this.state = -1;
         this.isMuted = false;
         this.melody = new Audio('assets/samples/melody.wav');
         this.kick = new Audio('assets/samples/kick.wav');
@@ -11,16 +12,14 @@ export default class samplesController {
         this.hihat = new Audio('assets/samples/hihat.wav');
         this.hihat_loop = new Audio('assets/samples/hihat_loop.wav');
         this.snare = new Audio('assets/samples/snare.wav');
-        this.scoresSteps = [10,20,30,40,50];
+        this.scoreNumber = 5;
         this.samples = [];
-        this.samples[0] = new Audio('assets/samples/sample1.wav');
-        this.samples[1] = new Audio('assets/samples/sample2.wav');
-        this.samples[2] = new Audio('assets/samples/sample3.wav');
-        this.samples[3] = new Audio('assets/samples/sample4.wav');
-        this.samples[4] = new Audio('assets/samples/sample5.wav');
-        this.state = -1;
-        for (let i = 0; i <= this.scoresSteps.length - 1; i++) {
+        this.scoresSteps = [];
+        for (let i = 0; i < this.scoreNumber; i++) {
+            this.scoresSteps[i] = 10 * (i + 1)
+            this.samples[i] = new Audio(`assets/samples/sample${i+1}.wav`);
             this.samples[i].loop = true;
+            console.log(`assets/samples/sample${i+1}.wav`)
         }
         DomHelper.getVolumeSlider().addEventListener('input', this.updateVolume.bind(this));
     }
@@ -67,7 +66,7 @@ export default class samplesController {
         this.state = -1;
     }
 
-    updateSample(score) {
+    updateScore(score) {
         if (this.state != this.scoresSteps.length-1 && score >= this.scoresSteps[this.state+1]) {
             this.resetCurrentSample();
             this.state += 1;
@@ -77,15 +76,12 @@ export default class samplesController {
 
     updateVolume() {
         const volume = DomHelper.getVolumeSlider().value;
-        this.kick.volume = volume;
-        this.snare.volume = volume;
-        this.hihatSound.volume = volume;
-        this.melodySound.volume = volume;
-        this.sample1.volume = volume;
-        this.sample2.volume = volume;
-        this.sample3.volume = volume;
-        this.sample4.volume = volume;
-        this.sample5.volume = volume;
+        this.samples.forEach(e => e.volume = volume);
+        // this.sample1.volume = volume;
+        // this.sample2.volume = volume;
+        // this.sample3.volume = volume;
+        // this.sample4.volume = volume;
+        // this.sample5.volume = volume;
     }
 
     toggleMute() {
