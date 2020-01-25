@@ -19,21 +19,28 @@ export default class SampleController {
         }
         DomHelper.getVolumeSlider().addEventListener('input', this.updateVolume.bind(this))
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
-        this.oscillatorType = 'sine'
-        
+        this.vol = this.audioContext.createGain()
+        this.vol.gain.value = 0.25
+        this.vol.connect(this.audioContext.destination)
+        this.waveList = ['sawtooth', 'sine', 'triangle', 'square']
+        this.waveIndex = 0
     }
 
     playEatSound(score) {
         if (!this.isMuted) {
             const oscillator = this.audioContext.createOscillator()
-            oscillator.connect(this.audioContext.destination);
-            oscillator.type = this.oscillatorType
+            oscillator.connect(this.vol)
+            oscillator.type = this.waveList[this.waveIndex]
             oscillator.frequency.value = 70 + (2*score)
             oscillator.start()
             oscillator.stop(this.audioContext.currentTime + 0.3)
         }
     }
 
+    swappy(){
+        this.waveIndex++
+        this.waveIndex %= 4
+    }
 
     playDeathSound() {
         if (!this.isMuted) {
@@ -79,8 +86,9 @@ export default class SampleController {
     }
 
     updateVolume() {
-        const volume = DomHelper.getVolumeSlider().value
-        this.samples.forEach(e => e.volume = volume)
+        value = DomHelper.getVolumeSlider().value
+        this.samples.forEach(e => e.volume = value)
+        this.vol.gain.value = value / 4
     }
 
     toggleMute() {
