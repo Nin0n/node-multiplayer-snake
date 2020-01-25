@@ -139,6 +139,7 @@ export default class GameController {
 
     muteAudioCallback() {
         this.audioController.toggleMute();
+        this.sampleController.toggleMute();
         this.gameView.setMuteStatus(this.audioController.isMuted);
     }
 
@@ -173,25 +174,19 @@ export default class GameController {
     }
 
     updateScore(color) {
-        console.log(color)
-            switch (color){
-                case "red":
-                    this.score += 1;
-                    break;
-                case "green":
-                    this.score += 5;
-                    break;
-                case "yellow":
-                    this.score += 25;
-                    break;
-                case "blue":
-                    this.score += 1;
-                    break;
-            }
-    }
-
-    updateMusic(score) {
-        this.sampleController.updateSample(score)
+        switch (color){
+            case "blue":
+            case "red":
+                this.score += 1;
+                break;
+            case "green":
+                this.score += 5;
+                break;
+            case "yellow":
+                this.score += 25;
+                break;
+        }
+        this.sampleController.updateScore(this.score)
     }
 
     /*******************************
@@ -218,7 +213,6 @@ export default class GameController {
     _handleFoodCollected(text, coordinate, color, isSwap) {
         this.textsToDraw.unshift(new TextToDraw(text, coordinate, color));
         this.updateScore(color)
-        this.updateMusic(this.score)
         // isSwap === blue
         if (isSwap) {
             //this.sampleController.playSnareSound();
