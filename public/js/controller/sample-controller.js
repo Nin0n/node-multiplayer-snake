@@ -10,7 +10,7 @@ export default class SampleController {
         this.deathSound2 = new Audio('assets/death2.wav')
         this.deathSound3 = new Audio('assets/death3.wav')
         this.killSound = new Audio('assets/kill.wav')
-        if (Math.random() < 0.5) {
+        if (Math.random() < 0.8) {
             this.scoreFolderName = "Ninon"
             this.scoreNumber = 8
         }

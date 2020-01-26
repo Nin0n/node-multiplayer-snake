@@ -181,7 +181,7 @@ export default class GameController {
                 this.score += 5
                 break
             case "yellow":
-                this.score += 25
+                this.score += 10
                 break
         }
         this.audioController.updateScore(this.score)
