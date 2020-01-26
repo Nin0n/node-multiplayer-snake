@@ -6,14 +6,23 @@ export default class SampleController {
     constructor() {
         this.sampleCurrentId = -1
         this.isMuted = false
-        this.deathSound = new Audio('assets/death.wav')
+        this.deathSound1 = new Audio('assets/death.wav')
+        this.deathSound2 = new Audio('assets/death2.wav')
+        this.deathSound3 = new Audio('assets/death3.wav')
         this.killSound = new Audio('assets/kill.wav')
-        this.scoreNumber = 8
+        if (Math.random() < 0.5) {
+            this.scoreFolderName = "Ninon"
+            this.scoreNumber = 8
+        }
+        else {
+            this.scoreFolderName = "Victor"
+            this.scoreNumber = 7
+        }
         this.samples = []
         this.scoresSteps = []
         for (let i = 0; i < this.scoreNumber; i++) {
             this.scoresSteps[i] = 10 * (i + 1)
-            this.samples[i] = new Audio(`assets/samples/sample${i+1}.ogg`)
+            this.samples[i] = new Audio(`assets/samples/${this.scoreFolderName}/sample${i+1}.ogg`)
             this.samples[i].loop = true
             console.log(`assets/samples/sample${i+1}.ogg`)
         }
@@ -44,7 +53,13 @@ export default class SampleController {
 
     playDeathSound() {
         if (!this.isMuted) {
-            this.deathSound.play()
+            console.log(this.sampleCurrentId)
+            if (this.sampleCurrentId < 0) {
+                this.deathSound1.play()
+            }
+            else {
+                this.deathSound3.play()
+            }
         }
     }
 

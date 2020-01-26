@@ -28,7 +28,7 @@ const ServerConfig = {
             TYPE: 'GOLDEN',
             COLOR: 'yellow',
             POINTS: 10,
-            GROWTH: 25,
+            GROWTH: 10,
             SPAWN_RATE: 0.01,
         },
         SWAP: {
