@@ -5,7 +5,7 @@
 
 ### Web Audio Project
 
-This game has been taken from https://github.com/simondiep/node-multiplayer-snake in order to improve the sound design and the music, mostly using the Web Audio API.
+This game has been taken from https://github.com/simondiep/node-multiplayer-snake in order to improve the sound design and the music, using the Web Audio API and Audio HTML5 objects.
 
 Thus, only few files were modified:
 - public/js/config/game-controller.js
@@ -16,8 +16,10 @@ Main modifications:
 - When the snake eats food, a sawtooth oscillator plays a sound. Then the pitch of the sound will increase for each eaten food. 
 - When the snake eats a blue square, then the oscillator switches to sine, then triangle, then square and so on from the beginning.
 - When the score from one player reaches 10, the first sample is played. Every ten points a new sample is played in order to build a complet track.
-- The sound design for a death varies. From 0 to 10 points, the original sound is played. From 10 to 50 a new sample is playes. Every death above will play a very scary sample for the death.
+- Two folders of samples are available for the tracks: Victor and Ninon. It is picked randomly in the beginning of the game.
+- The sound design for a death varies. From 0 to 10 points, the original sound is played. Every death above will play a very scary sample for the death.
 
+So, put your headphones and play at least till 80 points =) Multiplayers is even more fun
 
 A multiplayer snake game built on NodeJs, Express, socket.io, and JavaScript ES6.  No unnecessary libraries.
 
