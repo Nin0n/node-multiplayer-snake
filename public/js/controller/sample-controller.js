@@ -13,14 +13,14 @@ export default class SampleController {
         this.scoresSteps = []
         for (let i = 0; i < this.scoreNumber; i++) {
             this.scoresSteps[i] = 10 * (i + 1)
-            this.samples[i] = new Audio(`assets/samples/sample${i+1}.wav`)
+            this.samples[i] = new Audio(`assets/samples/sample${i+1}.ogg`)
             this.samples[i].loop = true
-            console.log(`assets/samples/sample${i+1}.wav`)
+            console.log(`assets/samples/sample${i+1}.ogg`)
         }
         DomHelper.getVolumeSlider().addEventListener('input', this.updateVolume.bind(this))
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
         this.vol = this.audioContext.createGain()
-        this.vol.gain.value = 0.25
+        this.vol.gain.value = 0.025
         this.vol.connect(this.audioContext.destination)
         this.waveList = ['sawtooth', 'sine', 'triangle', 'square']
         this.waveIndex = 0
@@ -88,7 +88,7 @@ export default class SampleController {
     updateVolume() {
         value = DomHelper.getVolumeSlider().value
         this.samples.forEach(e => e.volume = value)
-        this.vol.gain.value = value / 4
+        this.vol.gain.value = value / 10
     }
 
     toggleMute() {
