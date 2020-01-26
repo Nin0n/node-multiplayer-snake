@@ -3,9 +3,23 @@
 [![Build Status](https://travis-ci.org/simondiep/node-multiplayer-snake.svg?branch=master)](https://travis-ci.org/simondiep/node-multiplayer-snake)
 [![Dependency Status](https://david-dm.org/simondiep/node-multiplayer-snake/status.svg?style=flat)](https://david-dm.org/simondiep/node-multiplayer-snake)  
 
-A multiplayer snake game built on NodeJs, Express, socket.io, and JavaScript ES6.  No unnecessary libraries.
+### Web Audio Project
 
-Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
+This game has been taken from https://github.com/simondiep/node-multiplayer-snake in order to improve the sound design and the music, mostly using the Web Audio API.
+
+Thus, only few files were modified:
+- public/js/config/game-controller.js
+- public/js/config/sample-controller.js
+- app/configs/serveur-config.js
+
+Main modifications:
+- When the snake eats food, a sawtooth oscillator plays a sound. Then the pitch of the sound will increase for each eaten food. 
+- When the snake eats a blue square, then the oscillator switches to sine, then triangle, then square and so on from the beginning.
+- When the score from one player reaches 10, the first sample is played. Every ten points a new sample is played in order to build a complet track.
+- The sound design for a death varies. From 0 to 10 points, the original sound is played. From 10 to 50 a new sample is playes. Every death above will play a very scary sample for the death.
+
+
+A multiplayer snake game built on NodeJs, Express, socket.io, and JavaScript ES6.  No unnecessary libraries.
 
 ### Getting Started
 
