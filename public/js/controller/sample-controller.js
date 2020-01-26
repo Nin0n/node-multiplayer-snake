@@ -8,7 +8,7 @@ export default class SampleController {
         this.isMuted = false
         this.deathSound = new Audio('assets/death.wav')
         this.killSound = new Audio('assets/kill.wav')
-        this.scoreNumber = 5
+        this.scoreNumber = 8
         this.samples = []
         this.scoresSteps = []
         for (let i = 0; i < this.scoreNumber; i++) {
